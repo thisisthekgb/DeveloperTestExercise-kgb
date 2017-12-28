@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FileData
+﻿namespace FileData
 {
     /// <summary>
     /// Validates arguments passed to the FileData program
@@ -8,24 +6,22 @@ namespace FileData
     public interface IArgumentValidator
     {
         /// <summary>
-        /// Provides validation for argument usage
+        /// Are the arguments valid (length and type)
         /// </summary>
         /// <returns></returns>
         bool IsValidUsage();
 
         /// <summary>
-        /// Determines whether the given arguments specify that version information is required.
+        /// Determines whether file version information is required.
         /// </summary>
-        /// <param name="validArgs"></param>
         /// <returns></returns>
-        bool IsVersionRequired(IEnumerable<string> validArgs);
+        bool IsVersionRequired();
 
         /// <summary>
-        /// Determines whether the given arguments specify that size information is required.
+        /// Determines whether file size information is required.
         /// </summary>
-        /// <param name="validArgs"></param>
         /// <returns></returns>
-        bool IsSizeRequired(IEnumerable<string> validArgs);
+        bool IsSizeRequired();
     }
 
 }

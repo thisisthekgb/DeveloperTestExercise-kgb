@@ -13,8 +13,11 @@ namespace FileData
 
         private const int NumberOfRequiredArgs = 2; // default to 2 program arguments required for now
 
+        private static readonly IEnumerable<string> ValidVersionArgs = new List<string> { "-v", "--v", "/v", "-version" };
+        private static readonly IEnumerable<string> ValidSizeArgs = new List<string> { "-s", "--s", "/s", "-size" };
+
         #endregion
-        
+
         #region Private Fields
 
         private readonly IEnumerable<string> _args;
@@ -43,6 +46,21 @@ namespace FileData
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Determines whether there is a matching argument to a list of valid argument options.
+        /// </summary>
+        /// <param name="validArgs">the valid options for displaying version</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns>true - _args contains at least one of the valid arg options, else false</returns>
+        private bool IsMatch(IEnumerable<string> validArgs)
+        {
+            if (validArgs == null)
+            {
+                throw new ArgumentNullException(nameof(validArgs));
+            }
+            return validArgs.Any(s => _args.Any(s1 => s1 == s));
+        }
 
         #endregion
 
@@ -76,20 +94,15 @@ namespace FileData
         /// Checks whether the arguments passed to the class contain a valid option 
         /// to display version information..
         /// </summary>
-        /// <param name="validArgs">the valid options for displaying version</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <returns>true - arguments contain a valid option to display version information, else false</returns>
-        public bool IsVersionRequired(IEnumerable<string> validArgs)
+        public bool IsVersionRequired()
         {
             try
             {
-                if (validArgs == null)
-                {
-                    throw new ArgumentNullException(nameof(validArgs));
-                }
-                return validArgs.Any(s => _args.Any(s1 => s1 == s));
+                return IsMatch(ValidVersionArgs);
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
                 throw;
             }
@@ -99,11 +112,18 @@ namespace FileData
         /// Checks whether the arguments passed to the class contain a valid option 
         /// to display size information..
         /// </summary>
-        /// <param name="validArgs">the valid options for displaying size</param>
+        /// <exception cref="ArgumentNullException"></exception>
         /// <returns>true - arguments contain a valid option to display size informatiuon, else false</returns>
-        public bool IsSizeRequired(IEnumerable<string> validArgs)
+        public bool IsSizeRequired()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return IsMatch(ValidSizeArgs);
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
         }
 
         #endregion

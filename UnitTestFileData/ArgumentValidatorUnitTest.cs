@@ -12,7 +12,6 @@ namespace UnitTestFileData
     public class ArgumentValidatorUnitTest
     {
         private IArgumentValidator _argumentValidator;
-        private static readonly IEnumerable<string> ArgumentOptions = new List<string> { "-v","--v","/v","-version","-s","--s","/s","-size" };
 
         private static readonly IEnumerable<string> ValidVersion1Args = new List<string> { "-v", "c:/test.txt" };
         private static readonly IEnumerable<string> ValidVersion2Args = new List<string> { "--v", "c:/test.txt" };
@@ -20,8 +19,13 @@ namespace UnitTestFileData
         private static readonly IEnumerable<string> ValidVersion4Args = new List<string> { "-version", "c:/test.txt" };
 
         private static readonly IEnumerable<string> ValidSize1Args = new List<string> { "-s", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidSize2Args = new List<string> { "--s", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidSize3Args = new List<string> { "/s", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidSize4Args = new List<string> { "-size", "c:/test.txt" };
 
-        private static readonly IEnumerable<string> InValidArgs = new List<string> { "-d", "c:/test.txt" };
+        private static readonly IEnumerable<string> InValid1Args = new List<string> { "-d", "c:/test.txt" };
+        private static readonly IEnumerable<string> InValid2Args = new List<string> { "-sizeisnotright", "c:/test.txt" };
+        private static readonly IEnumerable<string> InValid3Args = new List<string> { "-versionisnotright", "c:/test.txt" };
 
         private static readonly IEnumerable<string> InValidArgsWrongNumber = new List<string> { "-v", "c:/test.txt", "-d" };
 
@@ -80,72 +84,107 @@ namespace UnitTestFileData
         {
             const bool expected = true;
             _argumentValidator = new ArgumentValidator(ValidVersion1Args);
-            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected success");
         }
 
         [TestMethod]
-        [WorkItem(1)]
+        [WorkItem(2)]
         public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion2ArgsTest()
         {
             const bool expected = true;
             _argumentValidator = new ArgumentValidator(ValidVersion2Args);
-            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected success");
         }
 
         [TestMethod]
-        [WorkItem(1)]
+        [WorkItem(2)]
         public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion3ArgsTest()
         {
             const bool expected = true;
             _argumentValidator = new ArgumentValidator(ValidVersion3Args);
-            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected success");
         }
 
         [TestMethod]
-        [WorkItem(1)]
+        [WorkItem(2)]
         public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion4ArgsTest()
         {
             const bool expected = true;
             _argumentValidator = new ArgumentValidator(ValidVersion4Args);
-            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected success");
         }
 
         [TestMethod]
         [WorkItem(1)]
-        public void IsVersionRequiredShouldFailWhenArgsDoesNotContainVersionTest()
+        public void IsVersionRequiredShouldFailWhenArgsDoNotContainValidVersionOption1Test()
         {
             const bool expected = false;
-            _argumentValidator = new ArgumentValidator(InValidArgs);
-            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            _argumentValidator = new ArgumentValidator(InValid1Args);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected failure");
         }
 
         [TestMethod]
         [WorkItem(1)]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void IsVersionRequiredShouldFailWhenArgumentOptionsIsNullTest()
+        public void IsVersionRequiredShouldFailWhenArgsDoNotContainValidVersionOption2Test()
         {
             const bool expected = false;
-            _argumentValidator = new ArgumentValidator(InValidArgs);
-            var actual = _argumentValidator.IsVersionRequired(null);
+            _argumentValidator = new ArgumentValidator(InValid2Args);
+            var actual = _argumentValidator.IsVersionRequired();
             Assert.AreEqual(expected, actual, "Expected failure");
         }
 
+        [TestMethod]
+        [WorkItem(1)]
+        public void IsVersionRequiredShouldFailWhenArgsDoNotContainValidVersionOption3Test()
+        {
+            const bool expected = false;
+            _argumentValidator = new ArgumentValidator(InValid3Args);
+            var actual = _argumentValidator.IsVersionRequired();
+            Assert.AreEqual(expected, actual, "Expected failure");
+        }
 
         [TestMethod]
         [WorkItem(2)]
-        public void IsSizeRequiredShouldSuccedWhenArgumentOptionsContainsSizeTest()
+        public void IsSizeRequiredShouldSucceedWhenArgumentOptionsContainsSize1Test()
         {
             const bool expected = true;
             _argumentValidator = new ArgumentValidator(ValidSize1Args);
-            var actual = _argumentValidator.IsSizeRequired(ArgumentOptions);
+            var actual = _argumentValidator.IsSizeRequired();
             Assert.AreEqual(expected, actual, "Expected success");
         }
 
+        [TestMethod]
+        [WorkItem(2)]
+        public void IsSizeRequiredShouldSucceedWhenArgumentOptionsContainsSize2Test()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidSize2Args);
+            var actual = _argumentValidator.IsSizeRequired();
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
+        [TestMethod]
+        [WorkItem(2)]
+        public void IsSizeRequiredShouldSucceedWhenArgumentOptionsContainsSize3Test()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidSize3Args);
+            var actual = _argumentValidator.IsSizeRequired();
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
+        [TestMethod]
+        [WorkItem(2)]
+        public void IsSizeRequiredShouldSucceedWhenArgumentOptionsContainsSize4Test()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidSize4Args);
+            var actual = _argumentValidator.IsSizeRequired();
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
 
     }
 }
