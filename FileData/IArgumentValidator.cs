@@ -14,11 +14,18 @@ namespace FileData
         bool IsValidUsage();
 
         /// <summary>
-        /// Determines whether the given arguments specifiy that version information is required.
+        /// Determines whether the given arguments specify that version information is required.
         /// </summary>
         /// <param name="validArgs"></param>
         /// <returns></returns>
         bool IsVersionRequired(IEnumerable<string> validArgs);
+
+        /// <summary>
+        /// Determines whether the given arguments specify that size information is required.
+        /// </summary>
+        /// <param name="validArgs"></param>
+        /// <returns></returns>
+        bool IsSizeRequired(IEnumerable<string> validArgs);
     }
 
 }

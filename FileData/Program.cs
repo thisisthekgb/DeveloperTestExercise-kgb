@@ -18,7 +18,7 @@ namespace FileData
     {
         #region Private Fields
 
-        private static readonly IEnumerable<string> ValidArgs = new List<string> { "-v" };
+        private static readonly IEnumerable<string> ValidArgs = new List<string> { "-v","--v","/v","-version" };
 
         #endregion
 

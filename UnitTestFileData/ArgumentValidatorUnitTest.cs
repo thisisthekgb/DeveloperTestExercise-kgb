@@ -12,16 +12,24 @@ namespace UnitTestFileData
     public class ArgumentValidatorUnitTest
     {
         private IArgumentValidator _argumentValidator;
-        private static readonly IEnumerable<string> ArgumentOptions = new List<string> { "-v" };
-        private static readonly IEnumerable<string> ValidArgs = new List<string> { "-v", "c:/test.txt" };
+        private static readonly IEnumerable<string> ArgumentOptions = new List<string> { "-v","--v","/v","-version","-s","--s","/s","-size" };
+
+        private static readonly IEnumerable<string> ValidVersion1Args = new List<string> { "-v", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidVersion2Args = new List<string> { "--v", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidVersion3Args = new List<string> { "/v", "c:/test.txt" };
+        private static readonly IEnumerable<string> ValidVersion4Args = new List<string> { "-version", "c:/test.txt" };
+
+        private static readonly IEnumerable<string> ValidSize1Args = new List<string> { "-s", "c:/test.txt" };
+
         private static readonly IEnumerable<string> InValidArgs = new List<string> { "-d", "c:/test.txt" };
+
         private static readonly IEnumerable<string> InValidArgsWrongNumber = new List<string> { "-v", "c:/test.txt", "-d" };
 
         [TestMethod]
         [WorkItem(1)]
         public void ConstructorValidTest()
         {
-            _argumentValidator = new ArgumentValidator(ValidArgs);
+            _argumentValidator = new ArgumentValidator(ValidVersion1Args);
             Assert.IsNotNull(_argumentValidator);
         }
 
@@ -40,7 +48,7 @@ namespace UnitTestFileData
         public void IsValidUsageShouldSucceedTest()
         {
             const bool expected = true;
-            _argumentValidator = new ArgumentValidator(ValidArgs);
+            _argumentValidator = new ArgumentValidator(ValidVersion1Args);
             var actual = _argumentValidator.IsValidUsage();
             Assert.AreEqual(expected,actual,"Expected success ");
         }
@@ -68,12 +76,42 @@ namespace UnitTestFileData
 
         [TestMethod]
         [WorkItem(1)]
-        public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersionTest()
+        public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion1ArgsTest()
         {
             const bool expected = true;
-            _argumentValidator = new ArgumentValidator(ValidArgs);
+            _argumentValidator = new ArgumentValidator(ValidVersion1Args);
             var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
-            Assert.AreEqual(expected, actual, "Expected failure");
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
+
+        [TestMethod]
+        [WorkItem(1)]
+        public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion2ArgsTest()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidVersion2Args);
+            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
+
+        [TestMethod]
+        [WorkItem(1)]
+        public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion3ArgsTest()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidVersion3Args);
+            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            Assert.AreEqual(expected, actual, "Expected success");
+        }
+
+        [TestMethod]
+        [WorkItem(1)]
+        public void IsVersionRequiredShouldSucceedWhenArgumentOptionContainsVersion4ArgsTest()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidVersion4Args);
+            var actual = _argumentValidator.IsVersionRequired(ArgumentOptions);
+            Assert.AreEqual(expected, actual, "Expected success");
         }
 
         [TestMethod]
@@ -95,6 +133,17 @@ namespace UnitTestFileData
             _argumentValidator = new ArgumentValidator(InValidArgs);
             var actual = _argumentValidator.IsVersionRequired(null);
             Assert.AreEqual(expected, actual, "Expected failure");
+        }
+
+
+        [TestMethod]
+        [WorkItem(2)]
+        public void IsSizeRequiredShouldSuccedWhenArgumentOptionsContainsSizeTest()
+        {
+            const bool expected = true;
+            _argumentValidator = new ArgumentValidator(ValidSize1Args);
+            var actual = _argumentValidator.IsSizeRequired(ArgumentOptions);
+            Assert.AreEqual(expected, actual, "Expected success");
         }
 
 
